@@ -12,7 +12,7 @@ use Src\Domain\Content\Repositories\ContentRepositoryInterface;
 use Illuminate\Support\Str;
 use Src\Domain\Content\Enums\ContentStatus;
 use Src\Domain\Content\Events\ContentCreated;
-use App\Http\DTOs\ContentFilterData;
+use Src\Domain\Content\DTOs\ContentFilterData;
 use Src\Domain\Content\Events\ContentPublished;
 
 class ContentService 

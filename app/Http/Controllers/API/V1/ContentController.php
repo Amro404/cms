@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Src\Domain\Content\DTOs\CreateContentData;
 use Src\Domain\Content\DTOs\UpdateContentData;
 use Src\Domain\Content\Services\ContentService;
-use App\Http\DTOs\ContentFilterData;
+use Src\Domain\Content\DTOs\ContentFilterData;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\DTOs;
+namespace Src\Domain\Content\DTOs;
 
 class ContentFilterData
 {

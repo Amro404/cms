@@ -5,10 +5,10 @@ namespace Src\Infrastructure\Repositories\Eloquent\Content;
 use Src\Domain\Content\Repositories\ContentRepositoryInterface;
 use App\Models\Content;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Src\Domain\Content\DTOs\ContentFilterData;
 use Src\Domain\Content\DTOs\CreateContentData;
 use Src\Domain\Content\DTOs\UpdateContentData;
 use Src\Domain\Content\Enums\ContentStatus;
-use App\Http\DTOs\ContentFilterData;
 
 class EloquentContentRepository implements ContentRepositoryInterface
 {

@@ -17,7 +17,7 @@ use Src\Domain\Content\Services\MediaService;
 use Src\Domain\Content\Services\FileStorageService;
 use Src\Domain\Content\Services\CacheService;
 use Tests\TestCase;
-use App\Http\DTOs\ContentFilterData;
+use Src\Domain\Content\DTOs\ContentFilterData;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ContentDomainTest extends TestCase

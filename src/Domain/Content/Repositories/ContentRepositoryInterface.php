@@ -4,9 +4,9 @@ namespace Src\Domain\Content\Repositories;
 
 use App\Models\Content;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Src\Domain\Content\DTOs\ContentFilterData;
 use Src\Domain\Content\DTOs\CreateContentData;
 use Src\Domain\Content\DTOs\UpdateContentData;
-use App\Http\DTOs\ContentFilterData;
 
 interface ContentRepositoryInterface
 {
