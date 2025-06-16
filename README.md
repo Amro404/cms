@@ -453,13 +453,13 @@ The application includes comprehensive testing coverage with **105+ tests** acro
 ```
 tests/
 ├── Unit/
-│   ├── UserDomainTest.php (14 tests)
-│   └── ContentDomainTest.php (15 tests)
+│   ├── UserDomainTest.php
+│   └── ContentDomainTest.php
 └── Feature/
-    ├── AuthControllerTest.php (26 tests)
-    ├── UserControllerTest.php (22 tests)
-    ├── ContentControllerTest.php (26 tests)
-    └── FeatureTestCase.php (Base test class)
+    ├── AuthControllerTest.php
+    ├── UserControllerTest.php
+    ├── ContentControllerTest.php
+    └── FeatureTestCase.php
 ```
 
 ### Running Tests
