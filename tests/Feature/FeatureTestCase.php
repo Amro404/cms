@@ -28,6 +28,7 @@ abstract class FeatureTestCase extends TestCase
         Permission::firstOrCreate(['name' => 'update content']);
         Permission::firstOrCreate(['name' => 'delete content']);
         Permission::firstOrCreate(['name' => 'publish content']);
+        Permission::firstOrCreate(['name' => 'draft content']);
         Permission::firstOrCreate(['name' => 'archive content']);
         Permission::firstOrCreate(['name' => 'manage users']);
         Permission::firstOrCreate(['name' => 'assign roles']);
@@ -39,7 +40,7 @@ abstract class FeatureTestCase extends TestCase
         $author = Role::firstOrCreate(['name' => 'author']);
 
         $admin->givePermissionTo(Permission::all());
-        $editor->givePermissionTo(['create content', 'update content', 'publish content']);
+        $editor->givePermissionTo(['create content', 'update content', 'publish content', 'draft content']);
         $author->givePermissionTo(['create content']);
     }
 }

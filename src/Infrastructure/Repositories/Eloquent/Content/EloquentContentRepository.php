@@ -168,7 +168,7 @@ class EloquentContentRepository implements ContentRepositoryInterface
     public function getPaginatedByTagSlug(string $tagSlug, int $perPage = 15, int $page = 1)
     {
         return $this->model::whereHas('tags', function ($q) use ($tagSlug) {
-            $q->where('slug', $tagSlug);
+            $q->where('tags.slug', $tagSlug);
         })
         ->with(['author', 'categories', 'tags', 'media'])
         ->paginate($perPage, ['*'], 'page', $page);
@@ -177,7 +177,7 @@ class EloquentContentRepository implements ContentRepositoryInterface
     public function getPaginatedByCategorySlug(string $categorySlug, int $perPage = 15, int $page = 1)
     {
         return $this->model::whereHas('categories', function ($q) use ($categorySlug) {
-            $q->where('slug', $categorySlug);
+            $q->where('categories.slug', $categorySlug);
         })
         ->with(['author', 'categories', 'tags', 'media'])
         ->paginate($perPage, ['*'], 'page', $page);
@@ -186,7 +186,7 @@ class EloquentContentRepository implements ContentRepositoryInterface
     public function getPaginatedByCategoryId(int $categoryId, int $perPage = 15, int $page = 1)
     {
         return $this->model::whereHas('categories', function ($q) use ($categoryId) {
-            $q->where('id', $categoryId);
+            $q->where('categories.id', $categoryId);
         })
         ->with(['author', 'categories', 'tags', 'media'])
         ->paginate($perPage, ['*'], 'page', $page);
@@ -195,7 +195,7 @@ class EloquentContentRepository implements ContentRepositoryInterface
     public function getPaginatedByTagId(int $tagId, int $perPage = 15, int $page = 1)
     {
         return $this->model::whereHas('tags', function ($q) use ($tagId) {
-            $q->where('id', $tagId);
+            $q->where('tags.id', $tagId);
         })
         ->with(['author', 'categories', 'tags', 'media'])
         ->paginate($perPage, ['*'], 'page', $page);

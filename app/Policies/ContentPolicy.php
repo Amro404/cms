@@ -38,7 +38,7 @@ class ContentPolicy
     {
         return $user->hasPermissionTo('update content') || 
                $user->hasRole('admin') || 
-               ($user->hasRole('author') && $content->user_id === $user->id);
+               ($user->hasRole('author') && $content->author_id === $user->id);
     }
 
     /**
@@ -48,7 +48,7 @@ class ContentPolicy
     {
         return $user->hasPermissionTo('delete content') || 
                $user->hasRole('admin') || 
-               ($user->hasRole('author') && $content->user_id === $user->id);
+               ($user->hasRole('author') && $content->author_id === $user->id);
     }
 
     /**
@@ -58,7 +58,7 @@ class ContentPolicy
     {
         return $user->hasPermissionTo('publish content') || 
                $user->hasRole('admin') || 
-               ($user->hasRole('author') && $content->user_id === $user->id);
+               $user->hasRole('editor');
     }
 
     /**
@@ -68,7 +68,8 @@ class ContentPolicy
     {
         return $user->hasPermissionTo('draft content') || 
                $user->hasRole('admin') || 
-               ($user->hasRole('author') && $content->user_id === $user->id);
+               $user->hasRole('editor') ||
+               ($user->hasRole('author') && $content->author_id === $user->id);
     }
 
     /**

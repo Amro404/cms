@@ -17,13 +17,14 @@ class ContentResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'excerpt' => $this->excerpt,
+            'body' => $this->body,
             'slug' => $this->slug,
             'status' => $this->status,
             'published_at' => $this->published_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'user_id' => $this->user_id,
-            'category_id' => $this->category_id,
+            'user_id' => $this->author_id,
             'tags' => TagResource::collection($this->whenLoaded('tags')),
             'categories' => CategoryResource::collection($this->whenLoaded('categories')),
             'featured_image' => $this->whenLoaded('featuredImage', function () {

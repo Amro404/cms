@@ -33,10 +33,10 @@ return new class extends Migration
             $table->index(['type', 'status']);
             $table->index(['author_id', 'status']);
             $table->index(['status', 'published_at']);
-            
+
             // Only create fulltext index for MySQL/MariaDB
             if (DB::getDriverName() === 'mysql') {
-                $table->fullText(['title', 'body']);
+                $table->fullText('body');
             }
         });
     }

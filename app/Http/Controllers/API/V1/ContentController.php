@@ -120,7 +120,14 @@ class ContentController extends ApiController
     public function update(UpdateContentRequest $request, int $id): JsonResponse
     {
         try {
-            $this->authorize('update content', Content::class);
+            // First find the content to pass to authorize
+            $content = $this->contentService->findContentById($id);
+            
+            if (!$content) {
+                return $this->errorResponse('Content not found', 404);
+            }
+            
+            $this->authorize('update', $content);
 
             $data = UpdateContentData::fromRequest(data: $request->toArray());
             $user = $request->user();
@@ -139,8 +146,8 @@ class ContentController extends ApiController
             Log::error('Content update failed', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
-                'data' => $data,
-                'user_id' => $user->id
+                'data' => $data ?? null,
+                'user_id' => $user->id ?? null
             ]);
 
             return $this->errorResponse($e->getMessage(), 422);
@@ -160,7 +167,14 @@ class ContentController extends ApiController
     public function destroy(int $id): JsonResponse
     {
         try {
-            $this->authorize('delete content', Content::class);
+            // First find the content to pass to authorize
+            $content = $this->contentService->findContentById($id);
+            
+            if (!$content) {
+                return $this->errorResponse('Content not found', 404);
+            }
+            
+            $this->authorize('delete', $content);
 
             $deleted = $this->contentService->deleteContent($id);
 
@@ -196,14 +210,27 @@ class ContentController extends ApiController
     public function publish(int $id): JsonResponse
     {
         try {
-            $this->authorize('publish content', Content::class);
+            // First find the content to pass to authorize
+            $content = $this->contentService->findContentById($id);
+            
+            if (!$content) {
+                return $this->errorResponse('Content not found', 404);
+            }
+            
+            $this->authorize('publish', $content);
 
-            $content = $this->contentService->publishContent($id);
+            $this->contentService->publishContent($id);
+            
+            // Get the updated content, bypassing cache
+            $updatedContent = Content::with(['author', 'categories', 'tags', 'media'])->find($id);
             
             return $this->resourceResponse(
-                new ContentResource($content),
+                new ContentResource($updatedContent),
                 'Content published successfully'
             );
+        } catch (AuthorizationException $e) {
+            return $this->errorResponse('Unauthorized', 403);
+            
         } catch (\Exception $e) {
             Log::error('Content publishing failed', [
                 'error' => $e->getMessage(),
@@ -228,12 +255,22 @@ class ContentController extends ApiController
     public function draft(int $id): JsonResponse
     {
         try {
-            $this->authorize('draft content', Content::class);
+            // First find the content to pass to authorize
+            $content = $this->contentService->findContentById($id);
+            
+            if (!$content) {
+                return $this->errorResponse('Content not found', 404);
+            }
+            
+            $this->authorize('draft', $content);
 
-            $content = $this->contentService->draftContent($id);
+            $this->contentService->draftContent($id);
+            
+            // Get the updated content, bypassing cache
+            $updatedContent = Content::with(['author', 'categories', 'tags', 'media'])->find($id);
             
             return $this->resourceResponse(
-                new ContentResource($content),
+                new ContentResource($updatedContent),
                 'Content drafted successfully'
             );
 
@@ -264,12 +301,21 @@ class ContentController extends ApiController
     public function archive(int $id): JsonResponse
     {
         try {
-            $this->authorize('archive content', Content::class);
+            $this->authorize('archive', Content::class);
 
-            $content = $this->contentService->archiveContent($id);
+            $content = $this->contentService->findContentById($id);
+            
+            if (!$content) {
+                return $this->errorResponse('Content not found', 404);
+            }
+
+            $this->contentService->archiveContent($id);
+            
+            // Get the updated content, bypassing cache
+            $updatedContent = Content::with(['author', 'categories', 'tags', 'media'])->find($id);
             
             return $this->resourceResponse(
-                new ContentResource($content),
+                new ContentResource($updatedContent),
                 'Content archived successfully'
             );
 

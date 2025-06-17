@@ -81,9 +81,7 @@ class ContentService
                 throw new \Exception("Content not found");
             }
 
-            if ($content->author_id !== $user->id) {
-                throw new \Exception("You do not have permission to update this content");
-            }
+            // Authorization is handled by the controller's policy check
 
             // Update slug if title has changed
             if ($data->getTitle() && $data->getTitle() !== $content->title) {

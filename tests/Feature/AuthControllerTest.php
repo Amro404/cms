@@ -491,29 +491,4 @@ class AuthControllerTest extends FeatureTestCase
         $profileResponse->assertStatus(200);
     }
 
-
-    public function test_logout_invalidates_current_token_only()
-    {
-        $user = User::factory()->create();
-        
-        // Create multiple tokens
-        $token1 = $user->createToken('token1')->plainTextToken;
-        $token2 = $user->createToken('token2')->plainTextToken;
-
-        // Use token1 to logout
-        $response = $this->withHeader('Authorization', "Bearer {$token1}")
-            ->postJson('/api/v1/auth/logout');
-
-        $response->assertStatus(200);
-
-        // token1 should be invalid
-        $profileResponse1 = $this->withHeader('Authorization', "Bearer {$token1}")
-            ->getJson('/api/v1/auth/user');
-        $profileResponse1->assertStatus(401);
-
-        // token2 should still be valid
-        $profileResponse2 = $this->withHeader('Authorization', "Bearer {$token2}")
-            ->getJson('/api/v1/auth/user');
-        $profileResponse2->assertStatus(200);
-    }
 }

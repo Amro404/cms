@@ -100,12 +100,6 @@ class ContentDomainTest extends TestCase
         $this->assertEquals('Updated excerpt', $updateData->getExcerpt());
     }
 
-    public function test_it_can_get_contents_with_filter()
-    {
-        // Skip this test due to serialization complexity with mocked LengthAwarePaginator
-        $this->markTestSkipped('Skipping due to serialization issues with paginator mocking in cache service');
-    }
-
     public function test_it_can_find_content_by_id()
     {
         $content = new Content([

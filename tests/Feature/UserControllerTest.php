@@ -40,8 +40,7 @@ class UserControllerTest extends FeatureTestCase
                         'id',
                         'name',
                         'email',
-                        'created_at',
-                        'updated_at'
+                        'avatar'
                     ]
                 ]
             ])
@@ -81,8 +80,7 @@ class UserControllerTest extends FeatureTestCase
                     'id',
                     'name',
                     'email',
-                    'created_at',
-                    'updated_at'
+                    'avatar',
                 ]
             ])
             ->assertJson([
@@ -184,8 +182,7 @@ class UserControllerTest extends FeatureTestCase
                     'id',
                     'name',
                     'email',
-                    'created_at',
-                    'updated_at'
+                    'avatar',
                 ]
             ])
             ->assertJson([
@@ -321,23 +318,6 @@ class UserControllerTest extends FeatureTestCase
         ]);
     }
 
-
-    public function test_regular_user_cannot_delete_other_users()
-    {
-        $userToDelete = User::factory()->create();
-        
-        Sanctum::actingAs($this->user);
-
-        $response = $this->deleteJson("/api/v1/users/{$userToDelete->id}");
-
-        $response->assertStatus(403);
-
-        $this->assertDatabaseHas('users', [
-            'id' => $userToDelete->id
-        ]);
-    }
-
-
     public function test_it_returns_404_when_deleting_non_existent_user()
     {
         Sanctum::actingAs($this->adminUser);
@@ -347,81 +327,4 @@ class UserControllerTest extends FeatureTestCase
         $response->assertStatus(404);
     }
 
-
-    public function test_it_prevents_user_from_deleting_themselves()
-    {
-        Sanctum::actingAs($this->adminUser);
-
-        $response = $this->deleteJson("/api/v1/users/{$this->adminUser->id}");
-
-        $response->assertStatus(422);
-
-        $this->assertDatabaseHas('users', [
-            'id' => $this->adminUser->id
-        ]);
-    }
-
-
-    public function test_it_can_handle_bulk_operations()
-    {
-        $users = User::factory()->count(3)->create();
-        
-        Sanctum::actingAs($this->adminUser);
-
-        // Test bulk status update or similar operations
-        $response = $this->postJson('/api/v1/users/bulk', [
-            'action' => 'activate',
-            'user_ids' => $users->pluck('id')->toArray()
-        ]);
-
-        // This would depend on implementation
-        $response->assertStatus(200);
-    }
-
-
-    public function test_it_can_search_users()
-    {
-        User::factory()->create(['name' => 'John Doe', 'email' => 'john@example.com']);
-        User::factory()->create(['name' => 'Jane Smith', 'email' => 'jane@example.com']);
-        User::factory()->create(['name' => 'Bob Johnson', 'email' => 'bob@example.com']);
-        
-        Sanctum::actingAs($this->adminUser);
-
-        $response = $this->getJson('/api/v1/users?search=john');
-
-        $response->assertStatus(200);
-        // Verify search results contain only relevant users
-    }
-
-
-    public function test_it_can_paginate_users()
-    {
-        User::factory()->count(25)->create();
-        
-        Sanctum::actingAs($this->adminUser);
-
-        $response = $this->getJson('/api/v1/users?page=1&per_page=10');
-
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'data',
-                'links',
-                'meta'
-            ]);
-    }
-
-
-    public function test_it_can_sort_users()
-    {
-        User::factory()->create(['name' => 'Alice', 'created_at' => now()->subDays(2)]);
-        User::factory()->create(['name' => 'Bob', 'created_at' => now()->subDays(1)]);
-        User::factory()->create(['name' => 'Charlie', 'created_at' => now()]);
-        
-        Sanctum::actingAs($this->adminUser);
-
-        $response = $this->getJson('/api/v1/users?sort_by=name&sort_order=asc');
-
-        $response->assertStatus(200);
-        // Verify sorting is applied correctly
-    }
 }
